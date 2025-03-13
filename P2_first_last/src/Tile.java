@@ -1,12 +1,13 @@
 
 public class Tile {
-	private int row, col;
+	private int row, col, room;
 	private char type; //@ $ W .
 	
-	public Tile(int row, int col, char type) {
+	public Tile(int row, int col, int room, char type) {
 		super();
 		this.row = row;
 		this.col = col;
+		this.room = room;
 		this.type = type;
 	}
 	
@@ -23,6 +24,15 @@ public class Tile {
 	public void setCol(int col) {
 		this.col = col;
 	}
+	
+	public int getRoom() {
+		return room;
+	}
+	
+	public void setRoom(int room) {
+		this.room = room;
+	}
+	
 	public char getType() {
 		return type;
 	}
@@ -31,7 +41,7 @@ public class Tile {
 	}
 	
 	public String toString() {
-		return row + ", " + col + ", " + type;
+		return row + ", " + col + ", " + room + ", " + type;
 	}
 	
 }

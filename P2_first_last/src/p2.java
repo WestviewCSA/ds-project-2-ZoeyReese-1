@@ -8,21 +8,22 @@ public class p2 {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("p2");
-		Tile[][][] array = readMap("TEST01");
+		Tile[][][] array = readMapBased("test3");
 		Map myMap = new Map(array.length, array[0].length, array[0][0].length);
-		myMap.setMap(array);
-		int room = 0; //need to figure out how to update room
-		for (int r = 0; r < array.length; r++) {
-			for (int c = 0; c < array[0].length; c++) {
-				myMap.setEl(r, c, room, array[r][c][room]);
+		
+		for (int room = 0; room < array[0][0].length; room++) {
+			for (int r = 0; r < array.length; r++) {
+				for (int c = 0; c < array[0].length; c++) {
+					myMap.setEl(r, c, room, array[r][c][room]);
+				}
 			}
 		}
-		System.out.println(myMap.getTile(1, 3, 0));
+		System.out.println(myMap.getTile(1, 2, 1));
 		
 	}
 	
 	//returns an array of the map which can then be put into the map class in main method
-	public static Tile[][][] readMap(String filename) {
+	public static Tile[][][] readMapBased(String filename) {
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -36,23 +37,27 @@ public class p2 {
 			
 			Tile[][][] array = new Tile[numRows][numCols][numRooms];
 			//process the map
-			while (scanner.hasNextLine() && rowIndex < numRows) {
-				//grab a line (one row of the map)
-				String row = scanner.nextLine();
-				
-				
-				if (row.length()>0) {
-					for (int i = 0; i < numCols && i < row.length(); i++) {
-						//grabs each element and puts it in a tile
-						char el = row.charAt(i);
-						Tile obj = new Tile(rowIndex, i, el);
-						array[rowIndex][i][roomIndex] = obj;
-						
+			while (scanner.hasNext() && roomIndex < numRooms) {
+				rowIndex = 0;
+				while (scanner.hasNextLine() && rowIndex < numRows) {
+					//grab a line (one row of the map)
+					String row = scanner.nextLine();
+					
+					
+					if (row.length()>0) {
+						for (int i = 0; i < numCols && i < row.length(); i++) {
+							//grabs each element and puts it in a tile
+							char el = row.charAt(i);
+							Tile obj = new Tile(rowIndex, i, roomIndex, el);
+							array[rowIndex][i][roomIndex] = obj;
+							
+						}
+						rowIndex++;
 					}
-					rowIndex++;
+					
+					
 				}
-				
-				
+				roomIndex++;
 			}
 			return array;
 			
