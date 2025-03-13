@@ -66,5 +66,46 @@ public class p2 {
 		}
 		return null;
 	}
+	
+	public static Tile[][][] readCoorBased(String filename){
+		try {
+			File file = new File(filename);
+			Scanner scanner = new Scanner(file);
+			
+			int numRows = scanner.nextInt();
+			int numCols = scanner.nextInt();
+			int numRooms = scanner.nextInt();
+			int rowIndex = 0;
+			int roomIndex = 0;
+			scanner.nextLine();
+			
+			Tile[][][] array = new Tile[numRows][numCols][numRooms];
+			
+			while (scanner.hasNext()) {
+				String obj = scanner.next();
+				char type = obj.charAt(0);
+				int row = scanner.nextInt();
+				int col = scanner.nextInt();
+				int room = scanner.nextInt();
+				Tile tile = new Tile(row, col, room, type);
+				array[row][col][room] = tile;
+			}
+			
+			for (int room = 0; room < numRooms; room++) {
+				for (int r = 0; r < numRows; r++) {
+					for (int c = 0; c < numCols; c++) {
+						if (array[r][c][room] == null) {
+							array[r][c][room] = new Tile(r, c, room, '.');
+						}
+					}
+				}
+			}
+		return array;
+			
+		}catch (FileNotFoundException e){
+			System.out.println(e);
+		}
+		return null;
+	}
 
 }
