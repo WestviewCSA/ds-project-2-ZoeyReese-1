@@ -8,7 +8,7 @@ public class p2 {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("p2");
-		Tile[][][] array = readMapBased("test3");
+		Tile[][][] array = readCoorBased("test9");
 		Map myMap = new Map(array.length, array[0].length, array[0][0].length);
 		
 		for (int room = 0; room < array[0][0].length; room++) {
@@ -18,7 +18,7 @@ public class p2 {
 				}
 			}
 		}
-		System.out.println(myMap.getTile(1, 2, 1));
+		System.out.println(myMap.getTile(1, 3, 0));
 		
 	}
 	
