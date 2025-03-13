@@ -1,0 +1,18 @@
+Design Plan - P2
+Due: 3/12/25 11:59pm
+
+After reading the specs start populating
+a list of things you think you might have to
+do to finish this project
+
+To do:
+	- understand what the spec is asking
+	- understand map-based input files
+	- create stack and queue methods
+	- instance variables, probably includes a 2d array (maze)
+	- getters and setters
+	- probably need a scanner to scan a doc to get maze
+	- create a constructor that takes in the items from scanner
+	- file reading, make tiles for each element and put them in map array
+	- method to get the runtime of the code
+	
