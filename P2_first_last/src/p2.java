@@ -8,7 +8,7 @@ public class p2 {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("p2");
-		Tile[][][] array = readCoorBased("test10");
+		Tile[][][] array = readMapBased("test1");
 		Map myMap = new Map(array.length, array[0].length, array[0][0].length);
 		
 		for (int room = 0; room < array[0][0].length; room++) {
@@ -22,7 +22,8 @@ public class p2 {
 				}
 			}
 		}
-		System.out.println(myMap.getStart());
+		findQueue("test1", myMap.getStart());
+		System.out.println(findQueue("test1", myMap.getStart()));
 		
 	}
 	
@@ -113,11 +114,46 @@ public class p2 {
 		return null;
 	}
 	
-	public static Tile findQueue(String file) {
-		Queue list = new Queue();
+	public static Queue findQueue(String file, Tile begin) {
+		Queue q = new Queue();
 		Map myMap = new Map(readMapBased(file));
+		Tile start = myMap.getStart();
+		q.enqueue(start);
+		//enqueues starting position
 		
+		//creates variables to hold tiles north south east and west
+		Tile n, s, e, w = null;
 		
+		if (start.getType() == '$') {
+			return null;
+		}else {
+			if (start.getRow() >= 1) {
+				Tile tile = new Tile(myMap.getTile(start.getRow()-1, start.getCol(), start.getRoom()));
+				if (tile.getType() == '.' && tile.getVisited() == false) {
+					tile.visited = true;
+					n = tile;
+				}
+			}if (start.getRow() < myMap.getRows()-1) {
+				Tile tile = new Tile(myMap.getTile(start.getRow()+1, start.getCol(), start.getRoom()));
+				if (tile.getType() == '.' && tile.getVisited() == false) {
+					tile.visited = true;
+					s = tile;
+				}
+			}if (start.getRow() < myMap.getCols()-1) {
+				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()+1, start.getRoom()));
+				if (tile.getType() == '.' && tile.getVisited() == false) {
+					tile.visited = true;
+					e = tile;
+					System.out.println(e);
+				}
+			}if (start.getRow() >= 1) {
+				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()-1, start.getRoom()));
+				if (tile.getType() == '.' && tile.getVisited() == false) {
+					tile.visited = true;
+					w = tile;
+				}
+			}
+		}
 		return null;
 	}
 

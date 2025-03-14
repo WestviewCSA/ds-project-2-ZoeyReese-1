@@ -22,6 +22,14 @@ public class Map {
 		this.map = map;
 	}
 	
+	public int getRows() {
+		return map.length;
+	}
+	
+	public int getCols() {
+		return map[0].length;
+	}
+	
 	public void setEl(int row, int col, int rooms, Tile el) {
 		map[row][col][rooms] = el;
 	}
