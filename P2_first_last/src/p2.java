@@ -114,10 +114,9 @@ public class p2 {
 		return null;
 	}
 	
-	public static Queue findQueue(String file, Tile begin) {
+	public static Queue findQueue(String file, Tile start) {
 		Queue q = new Queue();
 		Map myMap = new Map(readMapBased(file));
-		Tile start = myMap.getStart();
 		q.enqueue(start);
 		//enqueues starting position
 		
