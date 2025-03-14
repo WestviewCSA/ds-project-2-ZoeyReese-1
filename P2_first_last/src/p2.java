@@ -14,11 +14,15 @@ public class p2 {
 		for (int room = 0; room < array[0][0].length; room++) {
 			for (int r = 0; r < array.length; r++) {
 				for (int c = 0; c < array[0].length; c++) {
-					myMap.setEl(r, c, room, array[r][c][room]);
+					Tile myTile = array[r][c][room];
+					myMap.setEl(r, c, room, myTile);
+					if (array[r][c][room].getType() == 'W') {
+						myMap.setStart(myTile);
+					}
 				}
 			}
 		}
-		System.out.println(myMap.getTile(1, 3, 1));
+		System.out.println(myMap.getStart());
 		
 	}
 	
@@ -89,6 +93,7 @@ public class p2 {
 				int room = scanner.nextInt();
 				Tile tile = new Tile(row, col, room, type);
 				array[row][col][room] = tile;
+				
 			}
 			
 			for (int room = 0; room < numRooms; room++) {
@@ -105,6 +110,14 @@ public class p2 {
 		}catch (FileNotFoundException e){
 			System.out.println(e);
 		}
+		return null;
+	}
+	
+	public static Tile findQueue(String file) {
+		Queue list = new Queue();
+		Map myMap = new Map(readMapBased(file));
+		
+		
 		return null;
 	}
 
