@@ -59,7 +59,8 @@ public class Tile {
 	}
 	
 	public String toString() {
-		return row + ", " + col + ", " + room + ", " + type;
+		return "{" + row + ", " + col + ", " + room + ", " + type + "}";
 	}
+
 	
 }

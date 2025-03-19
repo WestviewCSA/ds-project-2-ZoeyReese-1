@@ -85,5 +85,14 @@ public class Queue<A>{
 			return false;
 		}
 	}
+
+	public A poll() {
+		// TODO Auto-generated method stub
+		if (size() > 0) {
+			return dequeue();
+		}else {
+			return null;
+		}
+	}
 	
 }

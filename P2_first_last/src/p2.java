@@ -114,6 +114,7 @@ public class p2 {
 		return null;
 	}
 	
+	//throws exceptions, need to figure out why
 	public static Queue findQueue(String file, Tile start) {
 		Queue q = new Queue();
 		Map myMap = new Map(readMapBased(file));
@@ -131,29 +132,32 @@ public class p2 {
 				if (tile.getType() == '.' && tile.getVisited() == false) {
 					tile.visited = true;
 					n = tile;
+					q.enqueue(n);
 				}
 			}if (start.getRow() < myMap.getRows()-1) {
 				Tile tile = new Tile(myMap.getTile(start.getRow()+1, start.getCol(), start.getRoom()));
 				if (tile.getType() == '.' && tile.getVisited() == false) {
 					tile.visited = true;
 					s = tile;
+					q.enqueue(s);
 				}
-			}if (start.getRow() < myMap.getCols()-1) {
+			}if (start.getCol() < myMap.getCols()-1) {
 				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()+1, start.getRoom()));
 				if (tile.getType() == '.' && tile.getVisited() == false) {
 					tile.visited = true;
 					e = tile;
-					System.out.println(e);
+					q.enqueue(e);
 				}
-			}if (start.getRow() >= 1) {
+			}if (start.getCol() >= 1) {
 				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()-1, start.getRoom()));
 				if (tile.getType() == '.' && tile.getVisited() == false) {
 					tile.visited = true;
 					w = tile;
+					q.enqueue(w);
 				}
 			}
 		}
-		return null;
+		return q;
 	}
 
 }
