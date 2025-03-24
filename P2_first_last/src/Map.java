@@ -57,7 +57,7 @@ public class Map {
 	public void printRoom(int room) {
 		for (int i = 0; i < getRows(); i++) {
 			for (int j = 0; j < getCols(); j++) {
-				System.out.println(getTile(i, j, room).getType());
+				System.out.print(getTile(i, j, room).getType());
 				//prints out all the tiles of a given room
 			}
 			System.out.println();

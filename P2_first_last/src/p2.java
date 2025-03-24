@@ -31,7 +31,7 @@ public class p2 {
 //		System.out.println(map.getTile(3, 2, 0));
 		map.setStart(start);
 		System.out.println(map.getStart().toString());
-//		System.out.println(queueHelper(map.getStart()));
+		queueSolve(map);
 		
 	}
 	
