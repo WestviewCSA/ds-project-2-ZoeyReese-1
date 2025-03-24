@@ -126,10 +126,31 @@ public class p2 {
 	public static void queueSolve(Map maze) {
 		maze = map;
 		Tile start = maze.getStart();
+		Tile end = null; //last tile, we don't know yet
 		int room = start.getRoom();
 		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
 		Queue<Tile> q = new Queue<>(); //queues up tiles to be visited
 		ArrayList<Tile> visited = new ArrayList<Tile>(); //tracks tiles that we already visited
+	
+		q.enqueue(start); //first tile to be checked
+		
+		Tile[][] prev = new Tile[maze.getRows()][maze.getCols()];
+		//holds the previous tiles that lead to the next tile
+		
+		while (!q.empty()) { //checks that queue still has elements
+			Tile curr = q.dequeue(); //gets next tile in line
+			visited.add(curr); //marks that we've visited this tile
+			
+			if (curr.getType() == '$' || curr.getType() == '|') {
+				end = curr;
+				break; //if we reached the goal, then we can stop checking
+			}
+			
+			//processes all valid neighbors
+			int[][] directions = {{-1, 0}, {1, 0}, {0,1}, {0, -1}};
+			//holds the ways to reach the north south east and west codes
+		}
+		
 	}
 	
 

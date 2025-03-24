@@ -44,4 +44,14 @@ public class Map {
 		map = array;
 	}
 	
+	public boolean canWalk(int row, int col, int room) {
+		if (row < 0 || row >= getRows() || col < 0 || col >= getCols()) {
+			return false;
+		}//checks if the coordinates are in boundaries/would cause an error
+		
+		Tile tile = getTile(row, col, room); //gets tile if it exists
+		return tile.getType() == '.' || tile.getType() == '$' || tile.getType() == '|';
+		//if the tile equals any of the desired types then it returns true
+	}
+	
 }
