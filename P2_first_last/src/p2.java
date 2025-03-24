@@ -1,29 +1,37 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class p2 {
 //needs to have multiple classes
 	
+	public static Map map;
+	public static Queue q;
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("p2");
 		Tile[][][] array = readMapBased("test1");
-		Map myMap = new Map(array.length, array[0].length, array[0][0].length);
-		
+		map = new Map(array.length, array[0].length, array[0][0].length);
+		q = new Queue();
+		Tile start = null;
 		for (int room = 0; room < array[0][0].length; room++) {
 			for (int r = 0; r < array.length; r++) {
 				for (int c = 0; c < array[0].length; c++) {
 					Tile myTile = array[r][c][room];
-					myMap.setEl(r, c, room, myTile);
+					map.setEl(r, c, room, myTile);
 					if (array[r][c][room].getType() == 'W') {
-						myMap.setStart(myTile);
+						start = map.getTile(r, c, room);
+						System.out.println("start is at " + r + " " + c + " " + room);
 					}
 				}
 			}
 		}
-		findQueue("test1", myMap.getStart());
-		System.out.println(findQueue("test1", myMap.getStart()));
+//		System.out.println(map.getTile(3, 2, 0));
+		map.setStart(start);
+		System.out.println(map.getStart().toString());
+//		System.out.println(queueHelper(map.getStart()));
 		
 	}
 	
@@ -115,49 +123,14 @@ public class p2 {
 	}
 	
 	//throws exceptions, need to figure out why
-	public static Queue findQueue(String file, Tile start) {
-		Queue q = new Queue();
-		Map myMap = new Map(readMapBased(file));
-		q.enqueue(start);
-		//enqueues starting position
-		
-		//creates variables to hold tiles north south east and west
-		Tile n, s, e, w = null;
-		
-		if (start.getType() == '$') {
-			return null;
-		}else {
-			if (start.getRow() >= 1) {
-				Tile tile = new Tile(myMap.getTile(start.getRow()-1, start.getCol(), start.getRoom()));
-				if (tile.getType() == '.' && tile.getVisited() == false) {
-					tile.visited = true;
-					n = tile;
-					q.enqueue(n);
-				}
-			}if (start.getRow() < myMap.getRows()-1) {
-				Tile tile = new Tile(myMap.getTile(start.getRow()+1, start.getCol(), start.getRoom()));
-				if (tile.getType() == '.' && tile.getVisited() == false) {
-					tile.visited = true;
-					s = tile;
-					q.enqueue(s);
-				}
-			}if (start.getCol() < myMap.getCols()-1) {
-				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()+1, start.getRoom()));
-				if (tile.getType() == '.' && tile.getVisited() == false) {
-					tile.visited = true;
-					e = tile;
-					q.enqueue(e);
-				}
-			}if (start.getCol() >= 1) {
-				Tile tile = new Tile(myMap.getTile(start.getRow(), start.getCol()-1, start.getRoom()));
-				if (tile.getType() == '.' && tile.getVisited() == false) {
-					tile.visited = true;
-					w = tile;
-					q.enqueue(w);
-				}
-			}
-		}
-		return q;
+	public static void queueSolve(Map maze) {
+		maze = map;
+		Tile start = maze.getStart();
+		int room = start.getRoom();
+		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
+		Queue<Tile> q = new Queue<>(); //queues up tiles to be visited
+		ArrayList<Tile> visited = new ArrayList<Tile>(); //tracks tiles that we already visited
 	}
+	
 
 }

@@ -11,12 +11,13 @@ public class Map {
 		return start;
 	}
 	
-	public void setStart(Tile start) {
-		this.start = start;
+	public void setStart(Tile tile) {
+		this.start = tile;
 	}
 	
 	public Map(int rows, int cols, int rooms) {
 		map = new Tile[rows][cols][rooms];
+		start = getTile(0, 0, 0);
 	}
 	public Map(Tile[][][] map) {
 		this.map = map;

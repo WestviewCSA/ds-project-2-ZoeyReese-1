@@ -2,7 +2,7 @@
 public class Tile {
 	private int row, col, room;
 	private char type; //@ $ W .
-	public boolean visited;
+	private boolean visited;
 	
 	public Tile(int row, int col, int room, char type) {
 		super();
@@ -61,6 +61,7 @@ public class Tile {
 	public String toString() {
 		return "{" + row + ", " + col + ", " + room + ", " + type + "}";
 	}
+
 
 	
 }
