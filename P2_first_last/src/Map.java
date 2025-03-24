@@ -54,4 +54,14 @@ public class Map {
 		//if the tile equals any of the desired types then it returns true
 	}
 	
+	public void printRoom(int room) {
+		for (int i = 0; i < getRows(); i++) {
+			for (int j = 0; j < getCols(); j++) {
+				System.out.println(getTile(i, j, room).getType());
+				//prints out all the tiles of a given room
+			}
+			System.out.println();
+		}
+	}
+	
 }

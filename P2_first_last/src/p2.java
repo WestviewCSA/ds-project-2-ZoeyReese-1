@@ -142,7 +142,7 @@ public class p2 {
 			visited.add(curr); //marks that we've visited this tile
 			
 			if (curr.getType() == '$' || curr.getType() == '|') {
-				end = curr;
+				end = curr; //the last tile is the one that we want
 				break; //if we reached the goal, then we can stop checking
 			}
 			
@@ -158,11 +158,37 @@ public class p2 {
 				if (maze.canWalk(newRow, newCol, room)) {
 					Tile next = maze.getTile(newRow, newCol, room);
 					if ((next.getType() == '.' || next.getType() == '$' || next.getType() == '|') && !containsTile(visited, next)) {
-					
+						q.enqueue(next);
+						visited.add(next);
+						prev[newRow][newCol] = curr; //the previous of the next tile == the curr tile
 					}
 				}
 			}
 		}
+		
+		if (end != null) {
+			Tile backtrack = end;
+			while (backtrack != start) {
+				path.enqueue(backtrack);
+				//creates the path
+				backtrack = prev[backtrack.getRow()][backtrack.getCol()];
+				//backtrack now refers to the prev so it can keep backtracking
+			}
+		}
+		
+		path.dequeue(); //dequeues end tile, keeps its type
+		
+		//outlines the path
+		while (!path.empty()) {
+			Tile newTile = path.dequeue();
+			newTile.setType('+');
+			maze.setEl(newTile.getRow(), newTile.getCol(), room, newTile);
+			//changes the types to show the path
+		}
+		maze.getTile(end.getRow(), end.getCol(), room).setType(end.getType());
+		
+		maze.printRoom(room);
+		
 		
 	}
 	public static boolean containsTile(ArrayList<Tile> list, Tile tile) {
