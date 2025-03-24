@@ -2,6 +2,7 @@
 public class Map {
 	public Tile[][][] map; //2d isn't enough, what about # of rooms?
 	private Tile start;
+	private Queue<Tile> starts;
 	
 	public Tile[][][] getMap() {
 		return map;
@@ -18,7 +19,17 @@ public class Map {
 	public Map(int rows, int cols, int rooms) {
 		map = new Tile[rows][cols][rooms];
 		start = getTile(0, 0, 0);
+		starts = new Queue<Tile>();
 	}
+	
+	public void addStart(Tile newStart) {
+		starts.enqueue(newStart);
+	}
+	
+	public Queue<Tile> getStarts(){
+		return starts;
+	}
+	
 	public Map(Tile[][][] map) {
 		this.map = map;
 	}

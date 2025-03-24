@@ -12,7 +12,7 @@ public class p2 {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("p2");
-		Tile[][][] array = readMapBased("test1");
+		Tile[][][] array = readMapBased("test3");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue();
 		Tile start = null;
@@ -23,14 +23,14 @@ public class p2 {
 					map.setEl(r, c, room, myTile);
 					if (array[r][c][room].getType() == 'W') {
 						start = map.getTile(r, c, room);
-						System.out.println("start is at " + r + " " + c + " " + room);
+						map.addStart(start);
 					}
 				}
 			}
 		}
 //		System.out.println(map.getTile(3, 2, 0));
 		map.setStart(start);
-		System.out.println(map.getStart().toString());
+		System.out.println(map.getStarts());
 		queueSolve(map);
 		
 	}
@@ -122,10 +122,22 @@ public class p2 {
 		return null;
 	}
 	
-	//throws exceptions, need to figure out why
+	//was trying to have a loop for multiple rooms, isn't working
 	public static void queueSolve(Map maze) {
+		Queue<Tile> starts = maze.getStarts();
+		while (!starts.empty()) {
+			Tile start = starts.dequeue();
+			int room = start.getRoom();
+			queueSolveRoom(maze, start);
+			maze.printRoom(room);
+		}
+		
+	}
+	
+	//solves 1 room. not good if there's multiple rooms/doorways
+	public static void queueSolveRoom(Map maze, Tile start) {
 		maze = map;
-		Tile start = maze.getStart();
+//		Tile start = maze.getStart();
 		Tile end = null; //last tile, we don't know yet
 		int room = start.getRoom();
 		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
