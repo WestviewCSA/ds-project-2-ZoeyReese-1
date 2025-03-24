@@ -147,10 +147,31 @@ public class p2 {
 			}
 			
 			//processes all valid neighbors
-			int[][] directions = {{-1, 0}, {1, 0}, {0,1}, {0, -1}};
-			//holds the ways to reach the north south east and west codes
+			int[][] directions = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+			//holds the ways to reach the north south east and west
+			
+			for (int[] dir : directions) {
+				int newRow = curr.getRow() + dir[0];
+				int newCol = curr.getCol() + dir[1];
+				//gets coordinates of the neighbor
+				
+				if (maze.canWalk(newRow, newCol, room)) {
+					Tile next = maze.getTile(newRow, newCol, room);
+					if ((next.getType() == '.' || next.getType() == '$' || next.getType() == '|') && !containsTile(visited, next)) {
+					
+					}
+				}
+			}
 		}
 		
+	}
+	public static boolean containsTile(ArrayList<Tile> list, Tile tile) {
+		for (Tile thisTile : list) { //checks each tile in the list
+			if (thisTile.getRow() == tile.getRow() && thisTile.getCol() == tile.getCol()) {
+				return true; //if they reference the same tile
+			}
+		}
+		return false;
 	}
 	
 
