@@ -11,7 +11,6 @@ public class p2 {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		System.out.println("p2");
 		Tile[][][] array = readMapBased("test3");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue();
@@ -23,7 +22,7 @@ public class p2 {
 					map.setEl(r, c, room, myTile);
 					if (array[r][c][room].getType() == 'W') {
 						start = map.getTile(r, c, room);
-						map.addStart(start);
+						map.addStart(start); //should add it to the start queue
 					}
 				}
 			}
@@ -31,7 +30,7 @@ public class p2 {
 //		System.out.println(map.getTile(3, 2, 0));
 		map.setStart(start);
 		System.out.println(map.getStarts());
-		queueSolve(map);
+		queueSolve(map, map.getStarts());
 		
 	}
 	
@@ -123,8 +122,9 @@ public class p2 {
 	}
 	
 	//was trying to have a loop for multiple rooms, isn't working
-	public static void queueSolve(Map maze) {
-		Queue<Tile> starts = maze.getStarts();
+	public static void queueSolve(Map maze, Queue<Tile> starts) {
+		maze = map;
+		System.out.println("starts: "+ starts); // currently starts is empty
 		while (!starts.empty()) {
 			Tile start = starts.dequeue();
 			int room = start.getRoom();

@@ -42,6 +42,10 @@ public class Map {
 		return map[0].length;
 	}
 	
+	public int getRooms() {
+		return map[0][0].length;
+	}
+	
 	public void setEl(int row, int col, int rooms, Tile el) {
 		map[row][col][rooms] = el;
 	}
