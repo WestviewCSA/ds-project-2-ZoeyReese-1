@@ -1,4 +1,3 @@
-
 public class Queue<A>{
 	
 	//data - must only use stack(s)
@@ -27,7 +26,7 @@ public class Queue<A>{
 	public A dequeue() {
 		
 		//if (queue is empty){
-		// don't try to access stuff 
+		// don't try to access stuff
 		//}
 		if (stackA.size() == 0) {
 			return null;
@@ -85,7 +84,6 @@ public class Queue<A>{
 			return false;
 		}
 	}
-
 	public A poll() {
 		// TODO Auto-generated method stub
 		if (size() > 0) {
@@ -96,3 +94,6 @@ public class Queue<A>{
 	}
 	
 }
+
+
+

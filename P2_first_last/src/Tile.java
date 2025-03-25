@@ -1,4 +1,3 @@
-
 public class Tile {
 	private int row, col, room;
 	private char type; //@ $ W .
@@ -61,7 +60,8 @@ public class Tile {
 	public String toString() {
 		return "{" + row + ", " + col + ", " + room + ", " + type + "}";
 	}
-
-
 	
 }
+
+
+

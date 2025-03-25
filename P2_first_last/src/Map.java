@@ -1,4 +1,3 @@
-
 public class Map {
 	public Tile[][][] map; //2d isn't enough, what about # of rooms?
 	private Tile start;
@@ -53,7 +52,6 @@ public class Map {
 	public Tile getTile(int row, int col, int rooms) {
 		return map[row][col][rooms];
 	}
-
 	public void setMap(Tile[][][] array) {
 		// TODO Auto-generated method stub
 		map = array;
@@ -80,3 +78,6 @@ public class Map {
 	}
 	
 }
+
+
+

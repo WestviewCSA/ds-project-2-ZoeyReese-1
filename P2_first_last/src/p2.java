@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 public class p2 {
 //needs to have multiple classes
 	
@@ -11,10 +10,11 @@ public class p2 {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		Tile[][][] array = readMapBased("test3");
+		Tile[][][] array = readCoorBased("test10");
 		map = new Map(array.length, array[0].length, array[0][0].length);
-		q = new Queue();
+		q = new Queue<Tile>();
 		Tile start = null;
+		Queue<Tile> starts = new Queue<Tile>(); // outside of class bc for some reason it wasn't populating right
 		for (int room = 0; room < array[0][0].length; room++) {
 			for (int r = 0; r < array.length; r++) {
 				for (int c = 0; c < array[0].length; c++) {
@@ -22,15 +22,15 @@ public class p2 {
 					map.setEl(r, c, room, myTile);
 					if (array[r][c][room].getType() == 'W') {
 						start = map.getTile(r, c, room);
-						map.addStart(start); //should add it to the start queue
+						starts.enqueue(start);; //should add it to the start queue
 					}
 				}
 			}
 		}
 //		System.out.println(map.getTile(3, 2, 0));
 		map.setStart(start);
-		System.out.println(map.getStarts());
-		queueSolve(map, map.getStarts());
+//		System.out.println(map.getStarts());
+		queueSolve(map, starts);
 		
 	}
 	
@@ -123,13 +123,11 @@ public class p2 {
 	
 	//was trying to have a loop for multiple rooms, isn't working
 	public static void queueSolve(Map maze, Queue<Tile> starts) {
-		maze = map;
-		System.out.println("starts: "+ starts); // currently starts is empty
+//		System.out.println(starts); // currently starts is empty
 		while (!starts.empty()) {
 			Tile start = starts.dequeue();
 			int room = start.getRoom();
 			queueSolveRoom(maze, start);
-			maze.printRoom(room);
 		}
 		
 	}
@@ -137,7 +135,6 @@ public class p2 {
 	//solves 1 room. not good if there's multiple rooms/doorways
 	public static void queueSolveRoom(Map maze, Tile start) {
 		maze = map;
-//		Tile start = maze.getStart();
 		Tile end = null; //last tile, we don't know yet
 		int room = start.getRoom();
 		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
@@ -186,20 +183,21 @@ public class p2 {
 				backtrack = prev[backtrack.getRow()][backtrack.getCol()];
 				//backtrack now refers to the prev so it can keep backtracking
 			}
+			path.dequeue(); //dequeues end tile, keeps its type
+		
+			//outlines the path
+			while (!path.empty()) {
+				Tile newTile = path.dequeue();
+				newTile.setType('+');
+				maze.setEl(newTile.getRow(), newTile.getCol(), room, newTile);
+				//changes the types to show the path
+			}
+			maze.getTile(end.getRow(), end.getCol(), room).setType(end.getType());
+			
+			maze.printRoom(room);
+		}else if (end == null) {
+			System.out.println("Error: Diamond Wolverine Buck not found");
 		}
-		
-		path.dequeue(); //dequeues end tile, keeps its type
-		
-		//outlines the path
-		while (!path.empty()) {
-			Tile newTile = path.dequeue();
-			newTile.setType('+');
-			maze.setEl(newTile.getRow(), newTile.getCol(), room, newTile);
-			//changes the types to show the path
-		}
-		maze.getTile(end.getRow(), end.getCol(), room).setType(end.getType());
-		
-		maze.printRoom(room);
 		
 		
 	}
@@ -212,5 +210,8 @@ public class p2 {
 		return false;
 	}
 	
-
 }
+
+
+//make sure that all the W’s are capitalized, add starts queue in main, add error message if end == null
+
