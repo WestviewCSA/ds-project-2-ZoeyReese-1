@@ -29,7 +29,8 @@ public class p2 {
 			}
 		}
 		
-		queueSolve(map, starts);
+		//can only run one solve method at a time, must comment out the ones we aren't using
+//		queueSolve(map, starts);
 		optimalSolve(map, starts);
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime);
@@ -167,8 +168,7 @@ public class p2 {
 	}
 	
 	public static void optimalSolve(Map maze, Queue<Tile> starts) {
-		System.out.println("optimal");
-		System.out.println("init starts" + starts);
+		System.out.println("Optimal Solve:");
 		while (!starts.empty()) {
 			Tile start = starts.dequeue();
 			int room = start.getRoom();
@@ -179,18 +179,13 @@ public class p2 {
 	
 	
 	public static void queueSolve(Map maze, Queue<Tile> starts) {
-		System.out.println("queue");
+		System.out.println("Queue Solve:");
 		Queue<Tile> startsCopy = copyQueue(starts);
-		System.out.println("init startscopy" + startsCopy);
-		System.out.println("init starts" + starts);
-		
 		while (!startsCopy.empty()) {
 			Tile start = startsCopy.peek();
 			starts.enqueue(startsCopy.dequeue());
 			queueSolveRoom(maze, start);
 		}
-		System.out.println(starts);
-		System.out.println(startsCopy);
 	}
 	
 	//solves 1 room. not good if there's multiple rooms/doorways
@@ -295,6 +290,8 @@ public class p2 {
 		while (!temp.empty()) {
 			init.enqueue(temp.dequeue());
 		}
+		System.out.println(init.toString());
+		System.out.println(copy.toString());
 		
 		return copy;
 	}
