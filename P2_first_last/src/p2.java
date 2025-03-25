@@ -10,7 +10,7 @@ public class p2 {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		Tile[][][] array = readCoorBased("test10");
+		Tile[][][] array = readMaze("test1");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue<Tile>();
 		Tile start = null;
@@ -120,6 +120,50 @@ public class p2 {
 		}
 		return null;
 	}
+	
+	public static Tile[][][] readMaze(String filename) {
+	    //method to determine if its map based or coor based
+		try {
+	        File file = new File(filename);
+	        Scanner scanner = new Scanner(file);
+
+	        // Ensure first three integers exist
+	        if (!scanner.hasNextInt()) {
+	            System.out.println("Error: Invalid file format (Missing dimensions)");
+	            scanner.close();
+	            return null;
+	        }
+	        
+	        // Read the three integers
+	        int numRows = scanner.nextInt();
+	        int numCols = scanner.nextInt();
+	        int numRooms = scanner.nextInt();
+	        scanner.nextLine(); // Move to the next line
+
+	        // Peek at the next line without consuming it
+	        if (!scanner.hasNextLine()) {
+	            System.out.println("Error: File does not contain valid maze data.");
+	            scanner.close();
+	            return null;
+	        }
+
+	        String firstLine = scanner.nextLine(); // Read first non-empty line
+	        scanner.close(); // Now safe to close
+
+	        // Decide which method to call based on line format
+	        if (firstLine.length() == numCols) {
+	            return readMapBased(filename);  
+	        } else {
+	            return readCoorBased(filename); 
+	        }
+
+	    } catch (FileNotFoundException e) {
+	        System.out.println("Error: File not found - " + filename);
+	    }
+	    return null;
+	}
+
+
 	
 	//was trying to have a loop for multiple rooms, isn't working
 	public static void queueSolve(Map maze, Queue<Tile> starts) {
