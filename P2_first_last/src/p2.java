@@ -10,6 +10,7 @@ public class p2 {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
+		long startTime = System.nanoTime();
 		Tile[][][] array = readMaze("test1");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue<Tile>();
@@ -27,10 +28,12 @@ public class p2 {
 				}
 			}
 		}
-//		System.out.println(map.getTile(3, 2, 0));
-		map.setStart(start);
-//		System.out.println(map.getStarts());
+		
 		queueSolve(map, starts);
+		optimalSolve(map, starts);
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime);
+		System.out.println("Runtime: " + duration + " nanoseconds");
 		
 	}
 	
@@ -162,18 +165,32 @@ public class p2 {
 	    }
 	    return null;
 	}
-
-
 	
-	//was trying to have a loop for multiple rooms, isn't working
-	public static void queueSolve(Map maze, Queue<Tile> starts) {
-//		System.out.println(starts); // currently starts is empty
+	public static void optimalSolve(Map maze, Queue<Tile> starts) {
+		System.out.println("optimal");
+		System.out.println("init starts" + starts);
 		while (!starts.empty()) {
 			Tile start = starts.dequeue();
 			int room = start.getRoom();
 			queueSolveRoom(maze, start);
 		}
+	}
+	//optimal solve is the same as the queue solve
+	
+	
+	public static void queueSolve(Map maze, Queue<Tile> starts) {
+		System.out.println("queue");
+		Queue<Tile> startsCopy = copyQueue(starts);
+		System.out.println("init startscopy" + startsCopy);
+		System.out.println("init starts" + starts);
 		
+		while (!startsCopy.empty()) {
+			Tile start = startsCopy.peek();
+			starts.enqueue(startsCopy.dequeue());
+			queueSolveRoom(maze, start);
+		}
+		System.out.println(starts);
+		System.out.println(startsCopy);
 	}
 	
 	//solves 1 room. not good if there's multiple rooms/doorways
@@ -245,6 +262,18 @@ public class p2 {
 		
 		
 	}
+	
+	public static void stackSolveRoom(Map maze, Tile start) {
+		Tile end = null;
+		int room = start.getRoom();
+		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
+		Queue<Tile> q = new Queue<>(); //queues up tiles to be visited
+		ArrayList<Tile> visited = new ArrayList<Tile>(); //tracks tiles that we already visited
+		
+		
+		
+	}
+	
 	public static boolean containsTile(ArrayList<Tile> list, Tile tile) {
 		for (Tile thisTile : list) { //checks each tile in the list
 			if (thisTile.getRow() == tile.getRow() && thisTile.getCol() == tile.getCol()) {
@@ -254,8 +283,20 @@ public class p2 {
 		return false;
 	}
 	
+	public static Queue<Tile> copyQueue(Queue<Tile> init){
+		Queue<Tile> copy = new Queue<Tile>();
+		Queue<Tile> temp = new Queue<Tile>();
+		
+		while (!init.empty()) {
+			copy.enqueue(init.peek());
+			temp.enqueue(init.dequeue());
+		}
+		
+		while (!temp.empty()) {
+			init.enqueue(temp.dequeue());
+		}
+		
+		return copy;
+	}
+	
 }
-
-
-//make sure that all the W’s are capitalized, add starts queue in main, add error message if end == null
-
