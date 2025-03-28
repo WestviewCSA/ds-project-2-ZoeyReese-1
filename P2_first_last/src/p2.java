@@ -34,7 +34,7 @@ public class p2 {
 		queueSolve(map, starts);
 //		optimalSolve(map, starts);
 //		stackSolve(map, starts);
-		
+	
 		long endTime = System.nanoTime();
 		double duration = (endTime - startTime)/1000000000.0; //gets the runtime
 		System.out.println("Total Runtime: " + duration + " seconds");
