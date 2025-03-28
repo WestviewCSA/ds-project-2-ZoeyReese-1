@@ -10,8 +10,7 @@ public class p2 {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		long startTime = System.nanoTime();
-		Tile[][][] array = readMaze("test10");
+		Tile[][][] array = readMaze("test7");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue<Tile>();
 		Tile start = null;
@@ -29,13 +28,15 @@ public class p2 {
 			}
 		}
 		
+		long startTime = System.nanoTime(); //starts timer to see how long it takes
+		
 		//CAN ONLY RUN ONE SOLVE METHOD AT A TIME, MUST COMMENT OUT THE ONES THAT AREN'T BEING USED
 		
-		queueSolve(map, starts);
-//		optimalSolve(map, starts);
+//		queueSolve(map, starts);
+		optimalSolve(map, starts);
 //		stackSolve(map, starts);
 	
-		long endTime = System.nanoTime();
+		long endTime = System.nanoTime(); //stops timing
 		double duration = (endTime - startTime)/1000000000.0; //gets the runtime
 		System.out.println("Total Runtime: " + duration + " seconds");
 		
