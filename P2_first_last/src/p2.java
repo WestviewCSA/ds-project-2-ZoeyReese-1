@@ -11,7 +11,7 @@ public class p2 {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		long startTime = System.nanoTime();
-		Tile[][][] array = readMaze("test1");
+		Tile[][][] array = readMaze("test10");
 		map = new Map(array.length, array[0].length, array[0][0].length);
 		q = new Queue<Tile>();
 		Tile start = null;
@@ -29,12 +29,15 @@ public class p2 {
 			}
 		}
 		
-		//can only run one solve method at a time, must comment out the ones we aren't using
-//		queueSolve(map, starts);
-		optimalSolve(map, starts);
+		//CAN ONLY RUN ONE SOLVE METHOD AT A TIME, MUST COMMENT OUT THE ONES THAT AREN'T BEING USED
+		
+		queueSolve(map, starts);
+//		optimalSolve(map, starts);
+//		stackSolve(map, starts);
+		
 		long endTime = System.nanoTime();
-		long duration = (endTime - startTime);
-		System.out.println("Runtime: " + duration + " nanoseconds");
+		double duration = (endTime - startTime)/1000000000.0; //gets the runtime
+		System.out.println("Total Runtime: " + duration + " seconds");
 		
 	}
 	
@@ -130,37 +133,32 @@ public class p2 {
 		try {
 	        File file = new File(filename);
 	        Scanner scanner = new Scanner(file);
-
-	        // Ensure first three integers exist
+	        //ensures that they have the dimensions listed at the top
 	        if (!scanner.hasNextInt()) {
-	            System.out.println("Error: Invalid file format (Missing dimensions)");
+	            System.out.println("IllegalCommandLineInputsException");
 	            scanner.close();
 	            return null;
 	        }
-	        
-	        // Read the three integers
+	       
+	        //gets the parameters
 	        int numRows = scanner.nextInt();
 	        int numCols = scanner.nextInt();
 	        int numRooms = scanner.nextInt();
-	        scanner.nextLine(); // Move to the next line
-
-	        // Peek at the next line without consuming it
+	        scanner.nextLine(); //moves to next line
+	        //if the line doesn't exist
 	        if (!scanner.hasNextLine()) {
-	            System.out.println("Error: File does not contain valid maze data.");
+	            System.out.println("IncompleteMapException");
 	            scanner.close();
 	            return null;
 	        }
-
-	        String firstLine = scanner.nextLine(); // Read first non-empty line
-	        scanner.close(); // Now safe to close
-
-	        // Decide which method to call based on line format
+	        String firstLine = scanner.nextLine(); // reads first nonempty line
+	        scanner.close();
+	        // based on the dimensions/line format, decides which method to call
 	        if (firstLine.length() == numCols) {
-	            return readMapBased(filename);  
+	            return readMapBased(filename); 
 	        } else {
-	            return readCoorBased(filename); 
+	            return readCoorBased(filename);
 	        }
-
 	    } catch (FileNotFoundException e) {
 	        System.out.println("Error: File not found - " + filename);
 	    }
@@ -180,10 +178,9 @@ public class p2 {
 	
 	public static void queueSolve(Map maze, Queue<Tile> starts) {
 		System.out.println("Queue Solve:");
-		Queue<Tile> startsCopy = copyQueue(starts);
-		while (!startsCopy.empty()) {
-			Tile start = startsCopy.peek();
-			starts.enqueue(startsCopy.dequeue());
+		while (!starts.empty()) {
+			Tile start = starts.peek();
+			starts.dequeue();
 			queueSolveRoom(maze, start);
 		}
 	}
@@ -258,15 +255,73 @@ public class p2 {
 		
 	}
 	
+	public static void stackSolve(Map maze, Queue<Tile> starts) {
+	    System.out.println("Stack Solve: ");
+	    while (!starts.empty()) {
+	        Tile start = starts.dequeue();
+	        stackSolveRoom(maze, start);
+	    }
+	}
+	
+	//stacksolve is the exact same as queuesolve except the queue is a stack now
 	public static void stackSolveRoom(Map maze, Tile start) {
-		Tile end = null;
-		int room = start.getRoom();
-		Queue<Tile> path = new Queue<Tile>(); //tracks the path later on
-		Queue<Tile> q = new Queue<>(); //queues up tiles to be visited
-		ArrayList<Tile> visited = new ArrayList<Tile>(); //tracks tiles that we already visited
-		
-		
-		
+	    Tile end = null;
+	    int room = start.getRoom();
+	    Queue<Tile> path = new Queue<Tile>(); //holds the path
+	    Stack<Tile> stack = new Stack<>();  //instead of queue it's now a stack
+	    ArrayList<Tile> visited = new ArrayList<Tile>(); //keeps track of tiles we visited
+	   
+	    stack.push(start); //puts first position into the stack
+	   
+	    Tile[][] prev = new Tile[maze.getRows()][maze.getCols()];
+	    //stores the previous tiles that lead to the curr tile
+	   
+	    while (!stack.empty()) {
+	        Tile curr = stack.pop(); //gets curr tile
+	        visited.add(curr); // says that we visited that tile
+	       
+	        if (curr.getType() == '$' || curr.getType() == '|') {
+	            end = curr; // found the wolverine buck or doorway
+	            break;
+	        }
+	       
+	        // gets all the directions north south east west
+	        int[][] directions = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+	       
+	        for (int[] dir : directions) {
+	            int newRow = curr.getRow() + dir[0];
+	            int newCol = curr.getCol() + dir[1];
+	            //gets coordinates of next tile
+	           
+	            if (maze.canWalk(newRow, newCol, room)) {
+	                Tile next = maze.getTile(newRow, newCol, room);
+	                if ((next.getType() == '.' || next.getType() == '$' || next.getType() == '|') && !containsTile(visited, next)) {
+	                    stack.push(next);
+	                    visited.add(next);
+	                    prev[newRow][newCol] = curr; //prev of the new tile is the curr tile
+	                }
+	            }
+	        }
+	    }
+	    // constructs path
+	    if (end != null) { //if found the end
+	        Tile backtrack = end;
+	        while (backtrack != start) {
+	            path.enqueue(backtrack); //stores the path
+	            backtrack = prev[backtrack.getRow()][backtrack.getCol()];
+	        }
+	        path.dequeue();
+	      
+	        while (!path.empty()) {
+	            Tile newTile = path.dequeue();
+	            newTile.setType('+'); //outlines path with +
+	            maze.setEl(newTile.getRow(), newTile.getCol(), room, newTile);
+	        }
+	        maze.getTile(end.getRow(), end.getCol(), room).setType(end.getType()); //keep end symbol
+	        maze.printRoom(room);
+	    } else {
+	        System.out.println("Error: Diamond Wolverine Buck not found");
+	    }
 	}
 	
 	public static boolean containsTile(ArrayList<Tile> list, Tile tile) {
@@ -297,3 +352,6 @@ public class p2 {
 	}
 	
 }
+
+
+
